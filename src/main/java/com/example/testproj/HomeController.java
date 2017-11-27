@@ -1,7 +1,4 @@
 package com.example.testproj;
-
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,47 +11,37 @@ import javax.validation.Valid;
 
 @Controller
 public class HomeController {
+
     @Autowired
-    private UserService userService;
-
-    @RequestMapping(value="/register", method = RequestMethod.GET)
-    public String showRegistrationPage(Model model){
-        model.addAttribute("user", new BIConversion.User());
-        return "registration";
-    }
-
-    @RequestMapping(value="/register", method = RequestMethod.POST)
-    public String processRegistrationPage(
-            @Valid @ModelAttribute("user") User user,
-            BindingResult result,
-            Model model){
-        model.addAttribute("user",user);
-        if (result.hasErrors()) {
-            return "registration";
-        } else {
-            userService.saveUser(user);
-            model.addAttribute("message",
-                    "User Account Successfully Created");
-
-        }
-        return "index";
-    }
-
+    private  AlumniService alumniService;
     @RequestMapping("/")
     public String index(){
         return "index";
-
     }
+
     @RequestMapping("/login")
-    public String login(){
+    public String login() {
         return "login";
     }
 
-    @RequestMapping("/secure")
-    public String secure (){
-        return "secure";
-
+    @RequestMapping(value="/alumni", method = RequestMethod.GET)
+    public String showAlumniPage(Model model){
+        model.addAttribute("alumni", new Alumni());
+        return "Alumni";
     }
 
-}
+    @RequestMapping(value="/alumni", method = RequestMethod.POST)
+         public String processAlumniPage(
+          @Valid @ModelAttribute("Alumni") Alumni alumni,
+          BindingResult result, Model model){
+          model.addAttribute("alumni", alumni);
+            if (result.hasErrors()) {
+                return"Alumni";
+            }else{
+                alumniService.saveAlumni(alumni);
+                model.addAttribute("message", "Alumni information stored");
+            }
+            return "Alumni";
+        }
+    }
 
